@@ -6,7 +6,7 @@ require "bigdecimal"
 class CurrencyConverterService
   class ApiError < StandardError; end
 
-  # базовий URL можна перекривати через ENV (наприклад, для іншого провайдера)
+  # Base URL can be overridden via ENV (e.g., for another provider)
   BASE_URL = ENV.fetch("CURRENCY_API_BASE", "https://api.frankfurter.dev/v1")
   CACHE_TTL = 1.hour
 
@@ -16,8 +16,6 @@ class CurrencyConverterService
     @to     = normalize_currency(to)
   end
 
-  # Основний метод — викликай converter.call
-  # Повертає: { amount:, from:, to:, rate:, converted: }
   def call
     validate!
 
@@ -38,7 +36,7 @@ class CurrencyConverterService
   def parse_amount(value)
     BigDecimal(value.to_s)
   rescue ArgumentError, TypeError
-    raise ApiError, "Невірна сума"
+    raise ApiError, "Invalid amount"
   end
 
   def normalize_currency(c)
@@ -46,11 +44,11 @@ class CurrencyConverterService
   end
 
   def validate!
-    raise ApiError, "Сума має бути більше 0" if @amount <= 0
-    raise ApiError, "Валюти повинні бути різні" if @from == @to
+    raise ApiError, "Amount must be greater than 0" if @amount <= 0
+    raise ApiError, "Currencies must be different" if @from == @to
   end
 
-  # Отримує курс (із кешем)
+  # Fetches the exchange rate (with caching)
   def fetch_rate(from, to)
     cache_key = "fx_rate:#{from}:#{to}"
 
@@ -58,12 +56,12 @@ class CurrencyConverterService
       resp = HTTParty.get("#{BASE_URL}/latest", query: { from: from, to: to })
 
       unless resp.code == 200 && resp["rates"] && resp["rates"][to]
-        raise ApiError, "Не вдалося отримати курс (status: #{resp.code})"
+        raise ApiError, "Failed to fetch rate (status: #{resp.code})"
       end
 
       resp["rates"][to]
     end
   rescue SocketError, Errno::ECONNREFUSED => e
-    raise ApiError, "Помилка мережі: #{e.message}"
+    raise ApiError, "Network error: #{e.message}"
   end
 end

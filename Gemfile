@@ -24,11 +24,14 @@ group :development, :test do
 end
 
 group :development do
-  gem "tailwindcss-rails"
-
+  gem "cssbundling-rails"
 end
 
 gem "httparty"
 
 gem "dotenv-rails", groups: [:development, :test]
 
+
+gem "tailwindcss-ruby", "~> 4.1"
+
+gem "tailwindcss-rails", "~> 4.3"
