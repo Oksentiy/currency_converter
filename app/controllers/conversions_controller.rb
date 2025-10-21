@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConversionsController < ApplicationController
   CURRENCIES = %w[USD EUR GBP PLN CAD AUD].freeze
 

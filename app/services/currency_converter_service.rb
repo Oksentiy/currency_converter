@@ -6,7 +6,6 @@ require "bigdecimal"
 class CurrencyConverterService
   class ApiError < StandardError; end
 
-  # Base URL can be overridden via ENV (e.g., for another provider)
   BASE_URL = ENV.fetch("CURRENCY_API_BASE", "https://api.frankfurter.dev/v1")
   CACHE_TTL = 1.hour
 

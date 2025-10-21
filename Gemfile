@@ -25,12 +25,13 @@ end
 
 group :development do
   gem "cssbundling-rails"
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false
 end
 
 gem "httparty"
 
 gem "dotenv-rails", groups: [:development, :test]
-
 
 gem "tailwindcss-ruby", "~> 4.1"
 

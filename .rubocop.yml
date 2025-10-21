@@ -1,0 +1,50 @@
+inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-rails
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+  Include:
+    - 'app/**/*.rb'
+    - 'lib/**/*.rb'
+
+Layout/IndentationConsistency:
+  EnforcedStyle: normal
+
+Lint/EmptyBlock:
+  Enabled: true
+
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: true
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+
+Layout/EmptyLineBetweenDefs:
+  Enabled: true
+
+Layout/IndentationWidth:
+  Enabled: true
+  Width: 2
+
+Layout/TrailingEmptyLines:
+  Enabled: true
