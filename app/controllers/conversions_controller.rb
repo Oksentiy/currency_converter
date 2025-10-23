@@ -9,7 +9,7 @@ class ConversionsController < ApplicationController
     return unless params[:amount].present? && params[:from].present? && params[:to].present?
 
     converter = CurrencyConverterService.new(
-      amount: params[:amount],
+      amount: params[:amount].to_f,
       from:   params[:from],
       to:     params[:to]
     )

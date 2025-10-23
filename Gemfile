@@ -29,6 +29,14 @@ group :development do
   gem "rubocop-rails", require: false
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem 'rails-controller-testing'
+end
+
 gem "httparty"
 
 gem "dotenv-rails", groups: [:development, :test]
