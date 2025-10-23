@@ -1,0 +1,33 @@
+name: Rails CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+      - name: Install dependencies
+        run: bundle install
+      - name: Run RuboCop on changed files
+        run: |
+          git fetch --prune --unshallow
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.rb$' || true)
+          if [ -n "$CHANGED_FILES" ]; then
+            echo "Running RuboCop on changed files:"
+            echo "$CHANGED_FILES"
+            bundle exec rubocop $CHANGED_FILES
+          else
+            echo "No Ruby files changed."
+          fi
+      - name: Run tests
+        run: bundle exec rspec
